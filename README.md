@@ -11,7 +11,7 @@ npx @mojomo/mcp-server
 Or from source:
 
 ```bash
-git clone https://github.com/mojomo/mcp-server
+git clone https://github.com/MojoMo-io/mcp-server
 cd mcp-server && npm install && npm run build
 ```
 
