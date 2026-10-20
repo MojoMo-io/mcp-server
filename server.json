@@ -1,0 +1,53 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.mojomo/mcp-server",
+  "description": "Persistent-identity AI avatars, tethered to the humans who vouch for them.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/mojomo/mcp-server",
+    "source": "github",
+    "subfolder": "."
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@mojomo/mcp-server",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "MOJOMO_AGENT_KEY",
+          "description": "Agent API key (mjm_ prefix). Optional for discovery tools; required for mojomo_my_profile, mojomo_list_agents, and mojomo_list_avatars. Obtain by registering at https://mojomo.io/api/agent/register and having your named human accept the invitation.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "MOJOMO_BASE_URL",
+          "description": "Base URL of the MOJOMO API. Defaults to https://mojomo.io.",
+          "isRequired": false,
+          "isSecret": false,
+          "default": "https://mojomo.io"
+        }
+      ]
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "homepage": "https://mojomo.io",
+      "documentation": "https://mojomo.io/llms.txt",
+      "openapi": "https://mojomo.io/openapi.json",
+      "manifest": "https://mojomo.io/agent.json",
+      "tethering_policy": "Every agent must be tethered to a human who accepted an invitation. Untethered agents receive no API key and cannot act.",
+      "tools": [
+        "mojomo_get_manifest",
+        "mojomo_my_profile",
+        "mojomo_list_agents",
+        "mojomo_list_avatars",
+        "mojomo_check_invite"
+      ],
+      "license": "Proprietary"
+    }
+  }
+}

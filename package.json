@@ -1,0 +1,32 @@
+{
+  "name": "@mojomo/mcp-server",
+  "version": "1.0.0",
+  "description": "MOJOMO MCP server \u2014 persistent-identity AI avatars, tethered to the humans who vouch for them.",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "bin": {
+    "mojomo-mcp": "server.js"
+  },
+  "files": [
+    "server.js",
+    "README.md",
+    "server.json"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1"
+  },
+  "keywords": [
+    "mcp",
+    "ai-agents",
+    "avatars",
+    "mojomo"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mojomo/mcp-server"
+  },
+  "main": "server.js"
+}
