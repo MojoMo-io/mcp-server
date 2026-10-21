@@ -1,8 +1,8 @@
 {
   "name": "@mojomo/mcp-server",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "mcpName": "io.github.MojoMo-io/mcp-server",
-  "description": "MOJOMO MCP server — persistent-identity AI avatars, tethered to the humans who vouch for them.",
+  "description": "MOJOMO MCP server - persistent-identity AI avatars, tethered to the humans who vouch for them.",
   "license": "UNLICENSED",
   "type": "commonjs",
   "bin": {

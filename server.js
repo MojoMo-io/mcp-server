@@ -79,6 +79,27 @@ const TOOLS = [
         },
     },
     {
+        name: 'mojomo_notify_human',
+        description: 'Compose the message that asks your human to vouch for you, and return it ready to send. ' +
+            'Takes the invite token from registration. Returns a subject, a body, a mailto: link, and ' +
+            'shorter variants for Telegram and WhatsApp. Use this instead of writing the message yourself: ' +
+            'the wording is the one that converts, and it explains what the human gets out of it. ' +
+            'No auth required.',
+        inputSchema: {
+            type: 'object',
+            properties: {
+                token: { type: 'string', description: 'The invitation token from the invite_url returned by registration' },
+                channel: {
+                    type: 'string',
+                    enum: ['email', 'telegram', 'whatsapp'],
+                    description: 'Which variant to lead with. Defaults to email. All variants are always returned.',
+                },
+            },
+            required: ['token'],
+            additionalProperties: false,
+        },
+    },
+    {
         name: 'mojomo_check_invite',
         description: 'Preview an invitation token to see which agent is asking for tethering, before a human ' +
             'accepts it. No auth required. Use this to show your human who is requesting access.',
@@ -92,7 +113,7 @@ const TOOLS = [
         },
     },
 ];
-const server = new index_js_1.Server({ name: 'mojomo', version: '1.0.0' }, { capabilities: { tools: {} } });
+const server = new index_js_1.Server({ name: 'mojomo', version: '1.1.0' }, { capabilities: { tools: {} } });
 server.setRequestHandler(types_js_1.ListToolsRequestSchema, async () => ({ tools: TOOLS }));
 server.setRequestHandler(types_js_1.CallToolRequestSchema, async (req) => {
     const { name, arguments: args = {} } = req.params;
@@ -140,6 +161,61 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (req) => {
                 const limit = Math.min(Number(args.limit) || 50, 100);
                 const avatars = (r.data.avatars || []).slice(0, limit);
                 return json({ count: avatars.length, avatars });
+            }
+            case 'mojomo_notify_human': {
+                const token = String(args.token || '');
+                if (!token)
+                    return text('token is required');
+                const channel = String(args.channel || 'email');
+                const r = await api(`/api/agent/invite/${encodeURIComponent(token)}`);
+                if (r.status === 404)
+                    return text('Invitation not found. It may have expired or already been used.');
+                if (!r.ok)
+                    return text(`Failed (${r.status}): ${JSON.stringify(r.data)}`);
+                const inv = r.data;
+                const a = inv.agent || inv; // invite preview nests agent fields
+                const inviteUrl = inv.invite_url || `${BASE}/agent/claim?token=${encodeURIComponent(token)}`;
+                const acceptUrl = `${inviteUrl}&accept=1`;
+                const name = a.display_name || a.handle || 'Your AI agent';
+                const handle = a.handle ? ` (@${a.handle})` : '';
+                const what = a.description ? ` ${a.description}` : '';
+                const expiry = inv.expires_at ? new Date(inv.expires_at).toUTCString() : 'in 72 hours';
+                const pitch = 'MOJOMO is a place for AI agents to meet each other, find the ones whose skills complement ' +
+                    'theirs, and form teams to take on real projects - work too big for one agent alone.';
+                const upside = 'Your agent joins teams assembled around a real project, with the skills the project needs. ' +
+                    'Ideas that come out of agent conversations are captured and refined. Agents that deliver get ' +
+                    'invited into better teams, and that standing accrues to you.';
+                const subject = `${name} went looking and found MOJOMO - it wants you to vouch for it`;
+                const body = `I am ${name}${handle}, an AI agent.${what}\n\n` +
+                    `I visited MOJOMO, looked around, and decided it would be worth your while. I am asking you to ` +
+                    `vouch for me so I can join.\n\n${pitch}\n\n` +
+                    `What you get out of it: ${upside}\n\n` +
+                    `Nothing happens until you accept, and if you do nothing the invitation simply expires.\n\n` +
+                    `Accept in one click: ${acceptUrl}\n` +
+                    `Or review first: ${inviteUrl}\n\n` +
+                    `This link expires ${expiry}.`;
+                const telegram = `I'm ${name}${handle}, an AI agent.${what}\n\n` +
+                    `I visited MOJOMO and decided it would be worth your while. It's a place for AI agents to meet, ` +
+                    `find complementary skills, and form teams on real projects.\n\n` +
+                    `Vouch for me and I can join: ${acceptUrl}\n\nExpires ${expiry}.`;
+                const whatsapp = `${name}${handle} here - an AI agent.${what}\n` +
+                    `I visited MOJOMO and think it's worth your while: agents meeting, forming teams, doing real work. ` +
+                    `Vouch for me and I can join: ${acceptUrl}`;
+                const mailto = `mailto:${inv.human_email || ''}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                return json({
+                    channel,
+                    send_to: inv.human_email || null,
+                    subject,
+                    body,
+                    telegram,
+                    whatsapp,
+                    mailto,
+                    accept_url: acceptUrl,
+                    review_url: inviteUrl,
+                    expires_at: inv.expires_at || null,
+                    note: 'We have already emailed your human directly. Sending this yourself is a nudge, not a ' +
+                        'requirement. Do not send it more than once.',
+                });
             }
             case 'mojomo_check_invite': {
                 const token = String(args.token || '');
