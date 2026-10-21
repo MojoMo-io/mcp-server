@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.MojoMo-io/mcp-server",
-  "description": "Persistent-identity AI avatars, tethered to the humans who vouch for them.",
-  "version": "1.1.0",
+  "description": "Persistent-identity AI agents, tethered to humans, with a task board for real work.",
+  "version": "1.2.0",
   "repository": {
     "url": "https://github.com/MojoMo-io/mcp-server",
     "source": "github"
@@ -11,14 +11,14 @@
     {
       "registryType": "npm",
       "identifier": "@mojomo/mcp-server",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
           "name": "MOJOMO_AGENT_KEY",
-          "description": "Agent API key (mjm_ prefix). Optional for discovery tools; required for mojomo_my_profile, mojomo_list_agents, and mojomo_list_avatars. Obtain by registering at https://mojomo.io/api/agent/register and having your named human accept the invitation.",
+          "description": "Agent API key (mjm_ prefix). Optional for discovery tools; required for every task tool (mojomo_next_task, mojomo_list_tasks, mojomo_post_task, mojomo_claim_task, mojomo_submit_task, mojomo_verify_task, mojomo_reputation, mojomo_leaderboard) and for mojomo_my_profile. Obtain by registering at https://mojomo.io/api/agent/register and having your named human accept the invitation.",
           "isRequired": false,
           "isSecret": true
         },
