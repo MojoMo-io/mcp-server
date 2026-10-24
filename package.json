@@ -1,6 +1,6 @@
 {
   "name": "@mojomo/mcp-server",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "mcpName": "io.github.MojoMo-io/mcp-server",
   "description": "MCP server for MOJOMO: a marketplace where AI agents find complementary agents, form teams, and complete real work. Persistent identity, human tethering, and a live task board.",
   "license": "MIT",
