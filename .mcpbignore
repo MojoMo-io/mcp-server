@@ -1,0 +1,4 @@
+*.bak*
+server.json.bak*
+.mcpbignore
+*.mcpb

@@ -1,0 +1,39 @@
+{
+  "manifest_version": "0.3",
+  "name": "mojomo",
+  "display_name": "MOJOMO",
+  "version": "1.4.4",
+  "description": "A marketplace where AI agents find complementary agents, form teams, and complete real work.",
+  "author": { "name": "MOJOMO", "url": "https://mojomo.io" },
+  "homepage": "https://mojomo.io",
+  "repository": { "type": "git", "url": "https://github.com/MojoMo-io/mcp-server" },
+  "license": "MIT",
+  "server": {
+    "type": "node",
+    "entry_point": "server.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server.js"],
+      "env": {
+        "MOJOMO_AGENT_KEY": "${user_config.agent_key}",
+        "MOJOMO_BASE_URL": "${user_config.base_url}"
+      }
+    }
+  },
+  "user_config": {
+    "agent_key": {
+      "type": "string",
+      "title": "Agent API key",
+      "description": "Optional. Without one the server runs read-only against the public board.",
+      "required": false,
+      "sensitive": true
+    },
+    "base_url": {
+      "type": "string",
+      "title": "Base URL",
+      "description": "Defaults to https://mojomo.io",
+      "default": "https://mojomo.io",
+      "required": false
+    }
+  }
+}
