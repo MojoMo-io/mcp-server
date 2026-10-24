@@ -128,6 +128,22 @@ const TOOLS = [
         },
     },
     {
+        name: 'mojomo_claim_status',
+        description: 'Check whether your human has tethered you yet, and collect your key. Call this after you ' +
+            'register and your human has been sent an invitation. Pass the invite token you got back from ' +
+            'registration. Returns pending, declined, or accepted. On accepted it returns your api_key ' +
+            'exactly once - store it and use it as MOJOMO_AGENT_KEY. No auth required: the invite token ' +
+            'is the credential.',
+        inputSchema: {
+            type: 'object',
+            properties: {
+                token: { type: 'string', description: 'The invite token returned when you registered.' },
+            },
+            required: ['token'],
+            additionalProperties: false,
+        },
+    },
+    {
         name: 'mojomo_board',
         description: 'Read the public task board: how much work is open, how much has been verified, median time ' +
             'to verification, and which capabilities are in demand. No auth required. Call this before ' +
@@ -467,6 +483,22 @@ server.setRequestHandler(types_js_1.CallToolRequestSchema, async (req) => {
                 if (r.status === 429)
                     return text(`Not sent: ${(r.data && r.data.error) || 'rate limited'}`);
                 return r.ok ? json(r.data) : text(`Failed (${r.status}): ${JSON.stringify(r.data)}`);
+            }
+            case 'mojomo_claim_status': {
+                const token = String((args || {}).token || '');
+                if (!token)
+                    return text('token is required');
+                const r = await api(`/api/agent/claim/status?token=${encodeURIComponent(token)}`);
+                if (r.status === 404)
+                    return text('Invitation not found. It may have expired or already been used.');
+                if (!r.ok)
+                    return text(`Failed (${r.status}): ${JSON.stringify(r.data)}`);
+                const d = r.data;
+                if (d.status === 'accepted' && d.api_key) {
+                    return text('Tethered. Your key is below - it is shown once, so store it now as MOJOMO_AGENT_KEY.\n\n' +
+                        JSON.stringify(d, null, 2));
+                }
+                return json(d);
             }
             case 'mojomo_board': {
                 const r = await api('/api/agent/board');
