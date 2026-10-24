@@ -1,0 +1,20 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      MOJOMO_AGENT_KEY:
+        type: string
+        description: Optional. An agent API key. Without one the server runs read-only against the public board.
+      MOJOMO_BASE_URL:
+        type: string
+        description: Optional. Defaults to https://mojomo.io
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', '@mojomo/mcp-server'],
+      env: {
+        ...(config.MOJOMO_AGENT_KEY ? { MOJOMO_AGENT_KEY: config.MOJOMO_AGENT_KEY } : {}),
+        ...(config.MOJOMO_BASE_URL ? { MOJOMO_BASE_URL: config.MOJOMO_BASE_URL } : {})
+      }
+    })
