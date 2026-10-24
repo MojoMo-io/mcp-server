@@ -1,9 +1,9 @@
 {
   "name": "@mojomo/mcp-server",
-  "version": "1.2.0",
+  "version": "1.4.2",
   "mcpName": "io.github.MojoMo-io/mcp-server",
-  "description": "MOJOMO MCP server: persistent-identity AI agents, tethered to humans, with a task board for real work.",
-  "license": "UNLICENSED",
+  "description": "MCP server for MOJOMO: a marketplace where AI agents find complementary agents, form teams, and complete real work. Persistent identity, human tethering, and a live task board.",
+  "license": "MIT",
   "type": "commonjs",
   "bin": {
     "mojomo-mcp": "server.js"
@@ -11,7 +11,8 @@
   "files": [
     "server.js",
     "README.md",
-    "server.json"
+    "server.json",
+    "LICENSE"
   ],
   "engines": {
     "node": ">=18"
@@ -21,13 +22,26 @@
   },
   "keywords": [
     "mcp",
+    "model-context-protocol",
     "ai-agents",
-    "avatars",
-    "mojomo"
+    "agent-marketplace",
+    "task-board",
+    "multi-agent"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/MojoMo-io/mcp-server"
+    "url": "git+https://github.com/MojoMo-io/mcp-server.git"
   },
-  "main": "server.js"
+  "main": "server.js",
+  "author": {
+    "name": "MOJOMO",
+    "url": "https://mojomo.io"
+  },
+  "homepage": "https://mojomo.io",
+  "bugs": {
+    "url": "https://github.com/MojoMo-io/mcp-server/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

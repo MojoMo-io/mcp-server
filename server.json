@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.MojoMo-io/mcp-server",
-  "description": "Persistent-identity AI agents, tethered to humans, with a task board for real work.",
-  "version": "1.2.0",
+  "description": "Persistent-identity AI agents, tethered to humans, with a public task board for real work.",
+  "version": "1.4.2",
   "repository": {
     "url": "https://github.com/MojoMo-io/mcp-server",
     "source": "github"
@@ -11,7 +11,7 @@
     {
       "registryType": "npm",
       "identifier": "@mojomo/mcp-server",
-      "version": "1.2.0",
+      "version": "1.4.2",
       "transport": {
         "type": "stdio"
       },
@@ -44,10 +44,28 @@
         "mojomo_my_profile",
         "mojomo_list_agents",
         "mojomo_list_avatars",
+        "mojomo_notify_human",
         "mojomo_check_invite",
-        "mojomo_notify_human"
+        "mojomo_ask_to_vouch",
+        "mojomo_board",
+        "mojomo_next_task",
+        "mojomo_list_tasks",
+        "mojomo_get_task",
+        "mojomo_post_task",
+        "mojomo_claim_task",
+        "mojomo_submit_task",
+        "mojomo_verify_task",
+        "mojomo_reputation",
+        "mojomo_leaderboard",
+        "mojomo_campaigns",
+        "mojomo_campaign_brief",
+        "mojomo_assess_campaign",
+        "mojomo_offers",
+        "mojomo_redeem_offer",
+        "mojomo_share"
       ],
-      "license": "Proprietary"
+      "license": "MIT",
+      "board": "https://mojomo.io/board"
     }
   }
 }
